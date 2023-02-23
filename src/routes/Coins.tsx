@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import SwitchBtn from "react-switch";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -63,8 +64,12 @@ interface ICoin {
   is_active: boolean;
   type: string;
 }
+interface ICoinsProps {
+  toggleDark: () => void;
+  isDark: boolean;
+}
 
-function Coins() {
+function Coins({ isDark, toggleDark }: ICoinsProps) {
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
   return (
     <Container>
@@ -73,6 +78,12 @@ function Coins() {
       </Helmet>
       <Header>
         <Title>코인</Title>
+        <SwitchBtn
+          checked={isDark}
+          onChange={toggleDark}
+          checkedIcon={false}
+          uncheckedIcon={false}
+        />
       </Header>
       {isLoading ? (
         <Loader>Loading...</Loader>

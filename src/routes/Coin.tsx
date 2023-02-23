@@ -6,8 +6,8 @@ import {
   useLocation,
   useParams,
   useRouteMatch,
+  Link,
 } from "react-router-dom";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
 import Chart from "./Chart";
@@ -140,8 +140,11 @@ interface PriceData {
     };
   };
 }
+interface ICoinProps {
+  isDark: boolean;
+}
 
-function Coin() {
+function Coin({ isDark }: ICoinProps) {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
   const priceMatch = useRouteMatch("/:coinId/price");
@@ -160,6 +163,7 @@ function Coin() {
   const loading = infoLoading || tickersLoading;
   return (
     <Container>
+      <Link to="/">&larr; Home</Link>
       <Helmet>
         <title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
@@ -214,7 +218,7 @@ function Coin() {
               <Price />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart coinId={coinId} />
+              <Chart isDark={isDark} coinId={coinId} />
             </Route>
           </Switch>
         </>
